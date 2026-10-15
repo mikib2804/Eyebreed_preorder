@@ -1,0 +1,42 @@
+ ⨯ [Error: ENOENT: no such file or directory, open 'C:\misha\eyebreed_preorder_waitlist\.next\prerender-manifest.json'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\misha\\eyebreed_preorder_waitlist\\.next\\prerender-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open 'C:\misha\eyebreed_preorder_waitlist\.next\server\next-font-manifest.json'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\misha\\eyebreed_preorder_waitlist\\.next\\server\\next-font-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open 'C:\misha\eyebreed_preorder_waitlist\.next\server\next-font-manifest.json'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\misha\\eyebreed_preorder_waitlist\\.next\\server\\next-font-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open 'C:\misha\eyebreed_preorder_waitlist\.next\server\next-font-manifest.json'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\misha\\eyebreed_preorder_waitlist\\.next\\server\\next-font-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open 'C:\misha\eyebreed_preorder_waitlist\.next\server\next-font-manifest.json'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\misha\\eyebreed_preorder_waitlist\\.next\\server\\next-font-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open 'C:\misha\eyebreed_preorder_waitlist\.next\server\next-font-manifest.json'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\misha\\eyebreed_preorder_waitlist\\.next\\server\\next-font-manifest.json'
+}
+ ⨯ [Error: ENOENT: no such file or directory, open 'C:\misha\eyebreed_preorder_waitlist\.next\server\next-font-manifest.json'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\misha\\eyebreed_preorder_waitlist\\.next\\server\\next-font-manifest.json'
+}

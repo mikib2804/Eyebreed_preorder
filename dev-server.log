@@ -1,0 +1,35 @@
+
+> eyebreed-preorder-waitlist@0.1.0 dev
+> next dev -p 3000
+
+   ▲ Next.js 15.4.10
+   - Local:        http://localhost:3000
+   - Network:      http://10.5.0.2:3000
+
+ ✓ Starting...
+ ✓ Ready in 4.5s
+ ○ Compiling / ...
+ ✓ Compiled / in 13s (638 modules)
+ GET / 200 in 3656ms
+ GET / 200 in 13890ms
+ GET /installHook.js.map 404 in 131ms
+ GET / 200 in 211ms
+ GET / 200 in 168ms
+ GET / 200 in 151ms
+ GET /appIcon.ico 404 in 117ms
+ GET / 200 in 203ms
+ GET /appIcon.ico 404 in 91ms
+ GET / 200 in 140ms
+ ✓ Compiled in 1352ms (615 modules)
+ GET / 200 in 297ms
+ ○ Compiling /_not-found ...
+ ✓ Compiled /_not-found in 1090ms (606 modules)
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 4.9s (934 modules)
+ GET / 500 in 15089ms
+ GET / 500 in 183ms
+ GET /_next/static/chunks/fallback/webpack.js 500 in 351ms
+ GET /_next/static/chunks/fallback/main.js 500 in 337ms
+ GET /_next/static/chunks/fallback/pages/_app.js 500 in 381ms
+ GET /_next/static/chunks/fallback/pages/_error.js 500 in 380ms
+ GET /_next/static/chunks/fallback/react-refresh.js 500 in 378ms
