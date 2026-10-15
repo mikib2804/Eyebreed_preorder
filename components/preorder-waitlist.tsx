@@ -1,15 +1,71 @@
 "use client";
 
 import Image from "next/image";
-import { ArrowRight, Mail, MousePointer2 } from "lucide-react";
-import { FormEvent, useState } from "react";
+import { ArrowRight, Check, Mail, MousePointer2 } from "lucide-react";
+import { FormEvent, useEffect, useState } from "react";
 import { PaymentSupport } from "./payment-support";
 
 type FormStatus = "idle" | "submitting" | "success" | "error";
+type Language = "en" | "he";
+
+const translations = {
+  en: {
+    preorder: "PREORDER",
+    emailLabel: "Email address",
+    emailPlaceholder: "EMAIL ADDRESS",
+    joining: "JOINING…",
+    join: "JOIN THE LIST",
+    fallbackError: "Please try again.",
+    eyes: "IT’S NOT THE EYES",
+    vision: "IT’S THE VISION",
+    rights: "© 2026 EYEBREED™. All Rights Reserved.",
+    powered: "DESIGNED AND POWERED BY EASYPASSPROJECTS ©",
+    successTitle: "YOU’RE ON THE LIST",
+    successBody: "Check your email for confirmation.",
+    accept: "ACCEPT",
+  },
+  he: {
+    preorder: "הזמנה מוקדמת",
+    emailLabel: "כתובת אימייל",
+    emailPlaceholder: "כתובת אימייל",
+    joining: "מצטרפים…",
+    join: "הצטרפו לרשימה",
+    fallbackError: "נסו שוב.",
+    eyes: "זה לא העיניים",
+    vision: "זה VISION",
+    rights: "© 2026 EYEBREED™. כל הזכויות שמורות.",
+    powered: "עיצוב ופיתוח על ידי EASYPASSPROJECTS ©",
+    successTitle: "אתם ברשימה",
+    successBody: "בדקו את האימייל שלכם לאישור.",
+    accept: "אישור",
+  },
+} as const;
 
 export function PreorderWaitlist() {
   const [status, setStatus] = useState<FormStatus>("idle");
   const [message, setMessage] = useState("");
+  const [language, setLanguage] = useState<Language>("en");
+  const copy = translations[language];
+  const hebrew = language === "he";
+
+  useEffect(() => {
+    const saved = window.localStorage.getItem("eyebreed-language");
+    if (saved === "he" || saved === "en") setLanguage(saved);
+  }, []);
+
+  useEffect(() => {
+    if (status !== "success") return;
+    const close = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setStatus("idle");
+    };
+    window.addEventListener("keydown", close);
+    return () => window.removeEventListener("keydown", close);
+  }, [status]);
+
+  function chooseLanguage(nextLanguage: Language) {
+    setLanguage(nextLanguage);
+    window.localStorage.setItem("eyebreed-language", nextLanguage);
+  }
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -22,21 +78,24 @@ export function PreorderWaitlist() {
       const response = await fetch("/api/preorder", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, language }),
       });
       const result = (await response.json()) as { message?: string };
-      if (!response.ok) throw new Error(result.message || "Please try again.");
+      if (!response.ok) throw new Error(result.message || copy.fallbackError);
       setStatus("success");
-      setMessage(result.message || "You’re on the preorder list.");
+      setMessage("");
       form.reset();
     } catch (error) {
       setStatus("error");
-      setMessage(error instanceof Error ? error.message : "Please try again.");
+      setMessage(error instanceof Error ? error.message : copy.fallbackError);
     }
   }
 
   return (
-    <main className="relative isolate min-h-svh overflow-hidden bg-[#25130e] text-[#f5eee4]">
+    <main
+      dir={hebrew ? "rtl" : "ltr"}
+      className="relative isolate min-h-svh overflow-hidden bg-[#25130e] text-[#f5eee4]"
+    >
       <Image
         src="/hero-mobile.webp"
         alt="Two EYEBREED models wearing the Vision of Life collection"
@@ -56,6 +115,26 @@ export function PreorderWaitlist() {
       <div className="absolute inset-0 -z-20 bg-[#1e0e09]/35" />
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_center,transparent_15%,rgba(18,7,4,.2)_58%,rgba(12,5,3,.66)_100%)]" />
       <div className="absolute inset-x-0 bottom-0 -z-10 h-1/2 bg-gradient-to-t from-black/65 to-transparent" />
+
+      <div className="absolute right-4 top-4 z-20 flex items-center gap-2 rounded-full border border-white/25 bg-black/20 px-3 py-2 font-display text-xs tracking-[.18em] text-white/75 backdrop-blur-md sm:right-7 sm:top-6 sm:text-sm">
+        <button
+          type="button"
+          onClick={() => chooseLanguage("en")}
+          aria-pressed={!hebrew}
+          className={!hebrew ? "text-white" : "transition hover:text-white"}
+        >
+          EN
+        </button>
+        <span className="text-white/30">|</span>
+        <button
+          type="button"
+          onClick={() => chooseLanguage("he")}
+          aria-pressed={hebrew}
+          className={hebrew ? "text-white" : "transition hover:text-white"}
+        >
+          עב
+        </button>
+      </div>
 
       <div className="mx-auto flex min-h-svh w-full max-w-[1500px] flex-col items-center px-5 pb-7 pt-6 text-center sm:px-8 sm:pb-9 sm:pt-8 lg:px-12">
         <header className="flex flex-col items-center" aria-label="EYEBREED">
@@ -99,11 +178,8 @@ export function PreorderWaitlist() {
             </p>
             <span className="h-px flex-1 bg-current/75" />
           </div>
-          <p
-            dir="rtl"
-            className="mt-5 text-xl tracking-[.15em] sm:mt-7 sm:text-2xl"
-          >
-            הזמנה מוקדמת
+          <p className="mt-5 text-xl tracking-[.15em] sm:mt-7 sm:text-2xl">
+            {copy.preorder}
           </p>
 
           <form
@@ -111,7 +187,7 @@ export function PreorderWaitlist() {
             className="mt-6 w-full max-w-[590px] space-y-2.5 sm:mt-7"
           >
             <label className="sr-only" htmlFor="preorder-email">
-              Email address
+              {copy.emailLabel}
             </label>
             <div className="flex min-h-16 items-center rounded-2xl border border-white/70 bg-black/25 px-5 shadow-[0_12px_45px_rgba(0,0,0,.18)] backdrop-blur-sm sm:min-h-[74px] sm:px-7">
               <input
@@ -120,12 +196,12 @@ export function PreorderWaitlist() {
                 type="email"
                 required
                 autoComplete="email"
-                placeholder="EMAIL ADDRESS"
+                placeholder={copy.emailPlaceholder}
                 className="min-w-0 flex-1 border-0 bg-transparent font-display text-xl tracking-[.04em] text-white outline-none ring-0 placeholder:text-white/65 focus:border-0 focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 sm:text-2xl"
               />
               <Mail
                 aria-hidden="true"
-                className="ml-4 size-6 shrink-0"
+                className={`${hebrew ? "mr-4" : "ml-4"} size-6 shrink-0`}
                 strokeWidth={1.4}
               />
             </div>
@@ -136,11 +212,11 @@ export function PreorderWaitlist() {
                 className="vision-join-button group flex min-h-16 w-full items-center justify-center gap-5 rounded-2xl bg-[#f3ebdf] px-6 font-display text-lg font-semibold tracking-[.32em] text-[#17100d] shadow-[0_12px_45px_rgba(0,0,0,.24)] transition duration-300 hover:bg-white focus-visible:outline-white disabled:cursor-wait disabled:opacity-70 sm:min-h-[74px] sm:text-2xl"
               >
                 <span>
-                  {status === "submitting" ? "JOINING…" : "JOIN THE LIST"}
+                  {status === "submitting" ? copy.joining : copy.join}
                 </span>
                 <ArrowRight
                   aria-hidden="true"
-                  className="size-6 transition-transform duration-300 group-hover:translate-x-1.5"
+                  className={`size-6 transition-transform duration-300 ${hebrew ? "rotate-180 group-hover:-translate-x-1.5" : "group-hover:translate-x-1.5"}`}
                   strokeWidth={1.5}
                 />
               </button>
@@ -166,13 +242,13 @@ export function PreorderWaitlist() {
         </section>
 
         <footer className="flex flex-col items-center text-[10px] leading-5 tracking-[.38em] sm:text-xs sm:leading-6">
-          <p>IT’S NOT THE EYES</p>
-          <p>IT’S THE VISION</p>
+          <p>{copy.eyes}</p>
+          <p>{copy.vision}</p>
           <div className="mx-auto mt-16 flex max-w-[1600px] flex-col items-center justify-center gap-3 border-t border-white/15 pt-6 text-[9px] tracking-wider text-white/75 sm:flex-row sm:justify-between">
-            <span>© 2026 EYEBREED™. All Rights Reserved.</span>
+            <span>{copy.rights}</span>
             <PaymentSupport />
             <span className="flex items-center justify-center gap-2 text-center sm:justify-end">
-              DESIGNED AND POWERED BY EASYPASSPROJECTS ©
+              {copy.powered}
               <Image
                 src="/easyPassProjects.png"
                 alt="EASYPASSPROJECTS"
@@ -183,6 +259,54 @@ export function PreorderWaitlist() {
           </div>
         </footer>
       </div>
+
+      {status === "success" && (
+        <div
+          className="fixed inset-0 z-50 grid place-items-center bg-[#120906]/45 px-4 py-8 backdrop-blur-[2px]"
+          role="presentation"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) setStatus("idle");
+          }}
+        >
+          <section
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="success-title"
+            className="w-full max-w-[470px] rounded-[18px] border border-[#6b402b]/70 bg-[#f3ebdf] px-6 py-7 text-center text-[#28170f] shadow-[0_24px_75px_rgba(0,0,0,.38)] sm:px-10 sm:py-9"
+          >
+            <div className="mx-auto grid size-14 place-items-center rounded-full border border-[#5a311f] sm:size-16">
+              <Check
+                aria-hidden="true"
+                className="size-7 sm:size-8"
+                strokeWidth={1.4}
+              />
+            </div>
+            <h2
+              id="success-title"
+              className="mt-5 font-display text-[clamp(1.9rem,6vw,3rem)] font-medium leading-none tracking-[-.025em]"
+            >
+              {copy.successTitle}
+            </h2>
+            <span className="mx-auto mt-5 block h-px w-9 bg-[#83583e]/55" />
+            <p className="mt-4 font-display text-base sm:text-xl">
+              {copy.successBody}
+            </p>
+            <button
+              type="button"
+              autoFocus
+              onClick={() => setStatus("idle")}
+              className="group mt-6 flex min-h-14 w-full items-center justify-center gap-4 rounded-xl bg-[#321c12] px-5 font-display text-base tracking-[.25em] text-[#f7eee3] transition duration-300 hover:bg-[#1d100b] focus-visible:outline-[#321c12] sm:text-lg"
+            >
+              <span>{copy.accept}</span>
+              <ArrowRight
+                aria-hidden="true"
+                className={`size-5 transition-transform ${hebrew ? "rotate-180 group-hover:-translate-x-1" : "group-hover:translate-x-1"}`}
+                strokeWidth={1.4}
+              />
+            </button>
+          </section>
+        </div>
+      )}
     </main>
   );
 }
