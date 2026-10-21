@@ -27,7 +27,7 @@ const translations = {
   he: {
     preorder: "הזמנה מוקדמת",
     emailLabel: "כתובת אימייל",
-    emailPlaceholder: "כתובת אימייל",
+    emailPlaceholder: "הכנס כתובת אימייל ",
     joining: "מצטרפים…",
     join: "הצטרפו לרשימה",
     fallbackError: "נסו שוב.",
