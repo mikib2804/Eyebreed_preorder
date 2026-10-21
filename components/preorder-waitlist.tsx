@@ -223,12 +223,20 @@ export function PreorderWaitlist() {
               {status === "idle" && (
                 <div
                   aria-hidden="true"
-                  className="vision-demo-cursor pointer-events-none absolute -bottom-7 right-0 z-10 h-16 w-16 text-[#17100d] sm:-bottom-8 sm:-right-3"
+                  className={`vision-demo-cursor pointer-events-none absolute -bottom-7 z-10 h-16 w-16 text-[#17100d] sm:-bottom-8 ${
+                    hebrew
+                      ? "vision-demo-cursor--rtl left-0 sm:-left-3"
+                      : "right-0 sm:-right-3"
+                  }`}
                 >
                   <span className="vision-click-ray vision-click-ray--one" />
                   <span className="vision-click-ray vision-click-ray--two" />
                   <span className="vision-click-ray vision-click-ray--three" />
-                  <MousePointer2 className="absolute bottom-0 right-0 size-11 fill-white stroke-[2.4] drop-shadow-[2px_3px_0_rgba(0,0,0,.7)] sm:size-12" />
+                  <MousePointer2
+                    className={`absolute bottom-0 size-11 fill-white stroke-[2.4] drop-shadow-[2px_3px_0_rgba(0,0,0,.7)] sm:size-12 ${
+                      hebrew ? "left-0 -scale-x-100" : "right-0"
+                    }`}
+                  />
                 </div>
               )}
             </div>

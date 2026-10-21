@@ -11,8 +11,21 @@ button, a { -webkit-tap-highlight-color: transparent; }
 button { cursor: pointer; }
 :focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
 
-.vision-demo-cursor { animation: vision-cursor-click 3.6s cubic-bezier(0.22, 1, 0.36, 1) infinite; transform-origin: 70% 72%; }
+.vision-demo-cursor {
+  --vision-cursor-angle: -7deg;
+  --vision-cursor-start-x: 24px;
+  --vision-cursor-exit-x: 10px;
+  animation: vision-cursor-click 3.6s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+  transform-origin: 70% 72%;
+}
+.vision-demo-cursor--rtl {
+  --vision-cursor-angle: 7deg;
+  --vision-cursor-start-x: -24px;
+  --vision-cursor-exit-x: -10px;
+  transform-origin: 30% 72%;
+}
 .vision-click-ray { position: absolute; right: 2.75rem; bottom: 2.8rem; width: 3px; height: 13px; border-radius: 999px; background: currentColor; opacity: 0; transform-origin: 50% 24px; animation: vision-click-rays 3.6s ease-in-out infinite; }
+.vision-demo-cursor--rtl .vision-click-ray { right: auto; left: 2.75rem; }
 .vision-click-ray--one { transform: rotate(-42deg) translateY(-4px); }
 .vision-click-ray--two { transform: rotate(-8deg) translateY(-7px); }
 .vision-click-ray--three { transform: rotate(28deg) translateY(-4px); }
@@ -20,14 +33,14 @@ button { cursor: pointer; }
 .vision-join-button:active { transform: scale(.985); }
 
 @keyframes vision-cursor-click {
-  0%,5% { opacity:0; transform:translate(24px,20px) scale(1.05) rotate(-7deg); }
+  0%,5% { opacity:0; transform:translate(var(--vision-cursor-start-x),20px) scale(1.05) rotate(var(--vision-cursor-angle)); }
   10% { opacity:1; }
-  32%,36% { opacity:1; transform:translate(0,0) scale(1) rotate(-7deg); }
-  40% { opacity:1; transform:translate(0,0) scale(.86) rotate(-7deg); }
-  45%,55% { opacity:1; transform:translate(0,0) scale(1) rotate(-7deg); }
-  60% { opacity:1; transform:translate(0,0) scale(.86) rotate(-7deg); }
-  65%,78% { opacity:1; transform:translate(0,0) scale(1) rotate(-7deg); }
-  88%,100% { opacity:0; transform:translate(10px,8px) scale(1) rotate(-7deg); }
+  32%,36% { opacity:1; transform:translate(0,0) scale(1) rotate(var(--vision-cursor-angle)); }
+  40% { opacity:1; transform:translate(0,0) scale(.86) rotate(var(--vision-cursor-angle)); }
+  45%,55% { opacity:1; transform:translate(0,0) scale(1) rotate(var(--vision-cursor-angle)); }
+  60% { opacity:1; transform:translate(0,0) scale(.86) rotate(var(--vision-cursor-angle)); }
+  65%,78% { opacity:1; transform:translate(0,0) scale(1) rotate(var(--vision-cursor-angle)); }
+  88%,100% { opacity:0; transform:translate(var(--vision-cursor-exit-x),8px) scale(1) rotate(var(--vision-cursor-angle)); }
 }
 @keyframes vision-click-rays { 0%,36%,45%,55%,65%,100%{opacity:0} 39%,42%,59%,62%{opacity:1} }
 @keyframes vision-button-invite {
@@ -36,5 +49,5 @@ button { cursor: pointer; }
 }
 @media(prefers-reduced-motion:reduce){
   .vision-demo-cursor,.vision-click-ray,.vision-join-button{animation:none}
-  .vision-demo-cursor{opacity:1;transform:rotate(-7deg)}
+  .vision-demo-cursor{opacity:1;transform:rotate(var(--vision-cursor-angle))}
 }
