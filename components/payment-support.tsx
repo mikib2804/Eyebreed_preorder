@@ -6,7 +6,7 @@ import {
   FaGooglePay,
   FaPaypal,
 } from "react-icons/fa";
-import { SiBit } from "react-icons/si";
+import { SiBit, SiBox } from "react-icons/si";
 // hello
 export function PaymentSupport() {
   return (
@@ -16,7 +16,8 @@ export function PaymentSupport() {
           <FaCcVisa className="h-7 w-auto" aria-label="Visa" />
           <FaPaypal className="h-7 w-auto" aria-label="PayPal" />
           <FaCcMastercard className="h-7 w-auto" aria-label="Mastercard" />
-          <FaCcAmex className="h-7 w-auto" aria-label="American Express" />
+          <SiBox className="h-7 w-auto" aria-label="PayBox" />
+          {/* <FaCcAmex className="h-7 w-auto" aria-label="American Express" /> */}
           <span
             className="pointer-events-none select-none text-xs font-bold tracking-tight"
             aria-label="Isracard"
